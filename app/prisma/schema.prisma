@@ -1,0 +1,136 @@
+generator client {
+    provider = "prisma-client-js"
+    binaryTargets = ["native", "linux-musl-arm64-openssl-3.0.x"]
+    output = "/home/ubuntu/whatsapp-manager/app/node_modules/.prisma/client"
+}
+
+datasource db {
+    provider = "postgresql"
+    url      = env("DATABASE_URL")
+}
+
+model Contact {
+  id           String   @id @default(cuid())
+  name         String
+  phone        String   @unique
+  avatar       String?
+  isGroup      Boolean  @default(false)
+  groupName    String?
+  lastSeen     DateTime?
+  isBlocked    Boolean  @default(false)
+  notes        String?
+  createdAt    DateTime @default(now())
+  updatedAt    DateTime @updatedAt
+
+  messages     Message[]
+}
+
+model Message {
+  id           String   @id @default(cuid())
+  content      String   @db.Text
+  type         MessageType @default(TEXT)
+  status       MessageStatus @default(PENDING)
+  priority     MessagePriority @default(NORMAL)
+  category     MessageCategory @default(PROFESSIONAL)
+  isFromUser   Boolean  @default(false)
+  isRead       Boolean  @default(false)
+  hasMedia     Boolean  @default(false)
+  mediaUrl     String?
+  mediaType    String?
+  timestamp    DateTime @default(now())
+  respondedAt  DateTime?
+  
+  contactId    String
+  contact      Contact  @relation(fields: [contactId], references: [id], onDelete: Cascade)
+  
+  tags         MessageTag[]
+  createdAt    DateTime @default(now())
+  updatedAt    DateTime @updatedAt
+}
+
+model Tag {
+  id          String   @id @default(cuid())
+  name        String
+  color       String   @default("#3B82F6")
+  description String?
+  isAutomatic Boolean  @default(false)
+  keywords    String[] @default([])
+  
+  messages    MessageTag[]
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+}
+
+model MessageTag {
+  id        String @id @default(cuid())
+  messageId String
+  tagId     String
+  
+  message   Message @relation(fields: [messageId], references: [id], onDelete: Cascade)
+  tag       Tag     @relation(fields: [tagId], references: [id], onDelete: Cascade)
+  
+  @@unique([messageId, tagId])
+}
+
+model QuickResponse {
+  id          String   @id @default(cuid())
+  title       String
+  content     String   @db.Text
+  category    String?
+  keywords    String[] @default([])
+  isActive    Boolean  @default(true)
+  usageCount  Int      @default(0)
+  
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+}
+
+model UserSettings {
+  id                    String @id @default(cuid())
+  alertTimeMinutes      Int    @default(30)
+  enablePushNotifications Boolean @default(true)
+  enableEmailNotifications Boolean @default(false)
+  workingHoursStart     String @default("09:00")
+  workingHoursEnd       String @default("18:00")
+  autoTagging           Boolean @default(true)
+  aiSuggestions         Boolean @default(true)
+  theme                 String @default("light")
+  language              String @default("pt")
+  
+  createdAt             DateTime @default(now())
+  updatedAt             DateTime @updatedAt
+}
+
+enum MessageType {
+  TEXT
+  IMAGE
+  VIDEO
+  AUDIO
+  DOCUMENT
+  LOCATION
+  CONTACT
+}
+
+enum MessageStatus {
+  PENDING
+  READ
+  RESPONDED
+  ARCHIVED
+  SPAM
+}
+
+enum MessagePriority {
+  LOW
+  NORMAL
+  HIGH
+  URGENT
+}
+
+enum MessageCategory {
+  PERSONAL
+  PROFESSIONAL
+  SALES
+  SUPPORT
+  MARKETING
+  OTHER
+}

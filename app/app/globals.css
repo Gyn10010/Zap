@@ -1,0 +1,207 @@
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  :root {
+    --background: 0 0% 100%;
+    --foreground: 222.2 84% 4.9%;
+    --card: 0 0% 100%;
+    --card-foreground: 222.2 84% 4.9%;
+    --popover: 0 0% 100%;
+    --popover-foreground: 222.2 84% 4.9%;
+    --primary: 142 76% 36%;
+    --primary-foreground: 355 7% 97%;
+    --secondary: 210 40% 96%;
+    --secondary-foreground: 222.2 84% 4.9%;
+    --muted: 210 40% 96%;
+    --muted-foreground: 215.4 16.3% 46.9%;
+    --accent: 210 40% 96%;
+    --accent-foreground: 222.2 84% 4.9%;
+    --destructive: 0 84.2% 60.2%;
+    --destructive-foreground: 210 40% 98%;
+    --border: 214.3 31.8% 91.4%;
+    --input: 214.3 31.8% 91.4%;
+    --ring: 142 76% 36%;
+    --radius: 0.5rem;
+  }
+
+  .dark {
+    --background: 222.2 84% 4.9%;
+    --foreground: 210 40% 98%;
+    --card: 222.2 84% 4.9%;
+    --card-foreground: 210 40% 98%;
+    --popover: 222.2 84% 4.9%;
+    --popover-foreground: 210 40% 98%;
+    --primary: 142 76% 36%;
+    --primary-foreground: 355 7% 97%;
+    --secondary: 217.2 32.6% 17.5%;
+    --secondary-foreground: 210 40% 98%;
+    --muted: 217.2 32.6% 17.5%;
+    --muted-foreground: 215 20.2% 65.1%;
+    --accent: 217.2 32.6% 17.5%;
+    --accent-foreground: 210 40% 98%;
+    --destructive: 0 62.8% 30.6%;
+    --destructive-foreground: 210 40% 98%;
+    --border: 217.2 32.6% 17.5%;
+    --input: 217.2 32.6% 17.5%;
+    --ring: 142 76% 36%;
+  }
+}
+
+@layer base {
+  * {
+    @apply border-border;
+  }
+  body {
+    @apply bg-background text-foreground;
+  }
+}
+
+/* Custom scrollbar */
+.custom-scrollbar::-webkit-scrollbar {
+  width: 6px;
+}
+
+.custom-scrollbar::-webkit-scrollbar-track {
+  background: #f1f1f1;
+  border-radius: 3px;
+}
+
+.custom-scrollbar::-webkit-scrollbar-thumb {
+  background: #c1c1c1;
+  border-radius: 3px;
+}
+
+.custom-scrollbar::-webkit-scrollbar-thumb:hover {
+  background: #a8a8a8;
+}
+
+/* Animations */
+.animate-float {
+  animation: float 3s ease-in-out infinite;
+}
+
+@keyframes float {
+  0%, 100% {
+    transform: translateY(0px);
+  }
+  50% {
+    transform: translateY(-10px);
+  }
+}
+
+.animate-pulse-slow {
+  animation: pulse 4s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+}
+
+/* Message status colors */
+.status-pending {
+  @apply bg-yellow-50 border-yellow-200;
+}
+
+.status-read {
+  @apply bg-blue-50 border-blue-200;
+}
+
+.status-responded {
+  @apply bg-green-50 border-green-200;
+}
+
+.status-urgent {
+  @apply bg-red-50 border-red-200;
+}
+
+/* Priority colors */
+.priority-low {
+  @apply text-gray-600;
+}
+
+.priority-normal {
+  @apply text-blue-600;
+}
+
+.priority-high {
+  @apply text-orange-600;
+}
+
+.priority-urgent {
+  @apply text-red-600;
+}
+
+/* WhatsApp theme colors */
+.whatsapp-green {
+  background-color: #25D366;
+}
+
+.whatsapp-dark-green {
+  background-color: #128C7E;
+}
+
+.whatsapp-light-green {
+  background-color: #DCF8C6;
+}
+
+.whatsapp-blue {
+  background-color: #34B7F1;
+}
+
+/* Message bubble styles */
+.message-bubble {
+  @apply rounded-lg px-3 py-2 max-w-xs;
+}
+
+.message-sent {
+  @apply bg-green-500 text-white ml-auto;
+}
+
+.message-received {
+  @apply bg-gray-100 text-gray-900;
+}
+
+/* Kanban column styles */
+.kanban-column {
+  @apply bg-gray-50 rounded-lg p-4;
+  min-height: 384px;
+}
+
+.kanban-card {
+  @apply bg-white rounded-lg shadow-sm border p-3 mb-3 cursor-pointer hover:shadow-md transition-shadow;
+}
+
+/* Loading states */
+.loading-shimmer {
+  background: linear-gradient(90deg, #f0f0f0 25%, #e0e0e0 50%, #f0f0f0 75%);
+  background-size: 200% 100%;
+  animation: shimmer 1.5s infinite;
+}
+
+@keyframes shimmer {
+  0% {
+    background-position: -200% 0;
+  }
+  100% {
+    background-position: 200% 0;
+  }
+}
+
+/* Focus states for accessibility */
+.focus-visible:focus {
+  @apply outline-none ring-2 ring-green-500 ring-offset-2;
+}
+
+/* Responsive text sizes */
+@layer components {
+  .text-responsive-sm {
+    @apply text-sm md:text-base;
+  }
+  
+  .text-responsive-lg {
+    @apply text-lg md:text-xl lg:text-2xl;
+  }
+  
+  .text-responsive-xl {
+    @apply text-xl md:text-2xl lg:text-3xl xl:text-4xl;
+  }
+}
